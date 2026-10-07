@@ -23,7 +23,7 @@ _boot_start = time.perf_counter()
 from async_lru import alru_cache
 import ujson as json
 import aioshutil as shutil
-from aiopath import AsyncPath
+from anyio import Path as AsyncPath
 from psnawp_api import PSNAWP
 try:
     from psnawp_api.core.psnawp_exceptions import PSNAWPNotFound
@@ -641,8 +641,8 @@ async def log_user_success(ctx: interactions.SlashContext, success_msg: str, fil
     channel = ctx.channel or ctx.author
 
     success_msg = await pretty_pingers_do(ctx,pingers,False,True) + success_msg
-
-    noitce_msgs = [attr_name for attr_name in dir(ctx) if attr_name.startswith('ezwizard3_special_ctx_attr_noticemsg_')]
+    
+    noitce_msgs = [attr_name for attr_name in dir(ctx) if (attr_name.startswith('ezwizard3_special_ctx_attr_noticemsg_') or attr_name.startswith('ezwizard3_special_ctx_attr_success_only_noticemsg_'))]
     for attr_name in noitce_msgs:
         new_line_chars = '\n\n' if attr_name == noitce_msgs[-1] else '\n\n\n'
         success_msg = getattr(ctx,attr_name) + new_line_chars + success_msg
